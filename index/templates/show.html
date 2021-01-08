@@ -1,0 +1,58 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <link rel="icon" href="{% static "img/logo.ico"%}" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-theme.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/x0popup.min.css' %}"/>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
+    <script src="{% static 'js/x0popup.min.js' %}"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <h3 style="color: red">您好，{{ name }}</h3>
+        <table class="table table-striped table-hover">
+            <caption>
+                <h3 class="text-primary">
+                    用户信息列表
+                    <input id="keyword" type="text" style="margin-left:20px;font-size: 15px;font-weight: bold">
+                    <a id="search" type="button" style="margin-left:20px;font-size: 15px;font-weight: bold" class="btn btn-success">查询</a>
+                </h3>
+              </caption>
+            <tbody>
+                <thead>
+                    <tr>
+                        <th><strong>用户名</strong></th>
+                        <th><strong>邮箱</strong></th>
+                    <tr>
+                </thead>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        $("#search").click(function () {
+            var keyword =  $("#keyword").val();
+            var path = ""
+            if($("tr.context").length != 0){
+                $("tr.context").remove()
+            }
+
+            if(keyword == ""){
+                path = "/event/index/searchbyname/"
+            }else {
+                path = "/event/index/searchbyname/?username=" + keyword
+            }
+            $.get(path, function (data) {
+                for (key in data){
+                    var text = "<tr class='context'><td>"+data[key][0]+"</td><td>"+data[key][1]+"</td></tr>"
+                    $("tbody").append(text);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>慧测科技</title>
+    <link rel="icon" href="{% static "img/logo.ico"%}" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-theme.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/x0popup.min.css' %}"/>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
+    <script src="{% static 'js/x0popup.min.js' %}"></script>
+</head>
+<body>
+    <div class="container-fluid">
+          <h3 style="margin-bottom: 20px">用户登录</h3>
+          <div id='input_user' class="form-group">
+            <label>用户名</label>
+            <div class="row">
+                <div class="col-xs-3">
+                    <input id='username' type="text" class="form-control" placeholder="用户名" required="required">
+                </div>
+            </div>
+          </div>
+          <div id="input_password" class="form-group">
+            <label>密码</label>
+            <div class="row">
+                <div class="col-xs-3">
+                    <input id='password' type="password" class="form-control" placeholder="密码" required="required">
+                </div>
+            </div>
+          </div>
+          <button id='submit' class="btn btn-primary">登录</button>
+    </div>
+
+ <script>
+     $("#submit").click(function () {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        if(username == ""){
+            $("#input_user").addClass("has-error")
+            if($("span.user").length == 0){
+                 $("#username").after("<span class='user help-block'>必填项</span>")
+            }
+        }else {
+            $("#input_user").removeClass("has-error")
+            $("span.user").remove()
+            if(password == ""){
+                $("#input_password").addClass("has-error")
+                if($("span.pass").length == 0){
+                     $("#password").after("<span class='pass help-block'>必填项</span>")
+                }
+            }else {
+                $("#input_password").removeClass("has-error")
+                $("span.pass").remove()
+                $.get("/event/index/user_login/?username="+username+"&password="+password, function(data){
+                    if(data.flag == true){
+                        x0p('登录成功', '','ok',
+                        function() {
+                            window.location.href ="/event/index/show/";
+                        });
+                    }else{
+                        x0p('登录失败', '','error',
+                        function() {
+                            window.location.href ="/event/index/login/";
+                        });
+                    }
+                })
+            }
+        }
+     })
+ </script>
+</body>
+</html>

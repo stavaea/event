@@ -1,0 +1,28 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>慧测科技</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/x0popup.min.css' %}"/>
+    <script src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
+    <script src="{% static 'js/x0popup.min.js' %}"></script>
+</head>
+<body>
+
+</body>
+    <script>
+    var data = {{ data|safe }}
+    if(data['flag'] == 0){
+        x0p('注册成功', '','ok',
+        function() {
+            window.location.href ="/event/index/login/";
+        });
+    }else {
+        x0p('注册失败', '','error',
+        function() {
+            window.location.href ="/event/index/register/";
+        });
+    }
+    </script>
+</html>
